@@ -3,11 +3,12 @@ package ru.otus.daniil.lesson3;
 import java.util.Scanner;
 
 public class MainApp {
-    public static void greetengs() {
+    public static void greetings() {
         System.out.println("Hello\nWorld\nfrom\nJava");
     }
 
     public static void checkSign(int a, int b, int c) {
+        System.out.println("a = " + a + " b = " + b + " c = " + c);
         if (a + b + c >= 0) {
             System.out.println("Сумма положительная");
         } else {
@@ -31,8 +32,8 @@ public class MainApp {
     }
 
     public static void compareNumbers() {
-        int a = (int) (Math.random() * 1000);
-        int b = (int) (Math.random() * 1000);
+        int a = (int) (Math.random() * 2001 - 1000);
+        int b = (int) (Math.random() * 2001 - 1000);
 
         if (a < b) {
             System.out.println(a + "<" + b);
@@ -42,6 +43,7 @@ public class MainApp {
     }
 
     public static void addOrSubstractAndPrint(int initValue, int delta, boolean increment) {
+        System.out.println("initValues = " + initValue + " delta = " + delta + " increment = " + increment);
         if (increment) {
             System.out.println(initValue + delta);
         } else {
@@ -56,10 +58,15 @@ public class MainApp {
             int inValue = scanner.nextInt();
             //switch было бы хорошо
             if (inValue == 1) {
-                greetengs();
+                greetings();
             }
             if (inValue == 2) {
-                checkSign(1, 2, -4);
+                int a = (int) (Math.random() * 2001 - 1000);
+                int b = (int) (Math.random() * 2001 - 1000);
+                int c = (int) (Math.random() * 2001 - 1000);
+                // по хорошему бы сделать метод public static int getRandomInt (int leftBound, int rightBound)
+                // но мы пока не умеем return
+                checkSign(a, b, c);
             }
             if (inValue == 3) {
                 selectColor();
@@ -68,11 +75,19 @@ public class MainApp {
                 compareNumbers();
             }
             if (inValue == 5) {
-                addOrSubstractAndPrint(7, 5, false);
+                int initValue = (int) (Math.random() * 2001 - 1000);
+                int delta = (int) (Math.random() * 2001 - 1000);
+                boolean increment = true;
+                if ((int) (Math.random() * 2001 - 1000) < 0) {
+                    increment = false;
+                }
+                addOrSubstractAndPrint(initValue, delta, increment);
             }
             if (inValue == 9) {
+
                 break;
             }
+
 
         }
 
