@@ -6,32 +6,32 @@ import java.util.Arrays;
 public class MainApp {
 
     //вспомогательные методы
-    public static int genIntWithinRange (int min, int max) {
+    public static int genIntWithinRange(int min, int max) {
         return (int) ((Math.random() * ((max - min) + 1)) + min);
     }
 
     //  можно перегрузить и выбирать maxSize и minSize
-    public static int[] genArray (int size, boolean isEmpty){
+    public static int[] genArray(int size, boolean isEmpty) {
         int arrSize = size;
 
         if (size == 0) {
-            arrSize = genIntWithinRange (4,15);
+            arrSize = genIntWithinRange(4, 15);
         }
 
-        int[] arr = new int [arrSize];
+        int[] arr = new int[arrSize];
 
         if (isEmpty) {
             return arr;
         }
 
         for (int i = 0; i < arrSize; i++) {
-            arr[i] = genIntWithinRange (-100,100);
+            arr[i] = genIntWithinRange(-100, 100);
         }
         return arr;
     }
 
     // Домашнее задание
-    public static int[] sumArrays (int[]... arrays) { // получается на вход идет матрица
+    public static int[] sumArrays(int[]... arrays) { // получается на вход идет матрица
 
         //дебаг
         System.out.println("Входные массивы");
@@ -43,13 +43,13 @@ public class MainApp {
         int maxSize = arrays[0].length;
 
         //нашли максимальный размер
-        for (int i = 1; i < arrays.length ; i++) {
+        for (int i = 1; i < arrays.length; i++) {
             if (arrays[i].length > maxSize) {
                 maxSize = arrays[i].length;
             }
         }
 
-        int[] resArray = genArray (maxSize, true);
+        int[] resArray = genArray(maxSize, true);
 
         for (int i = 0; i < arrays.length; i++) {
             for (int j = 0; j < arrays[i].length; j++) {
@@ -61,7 +61,7 @@ public class MainApp {
         return resArray;
     }
 
-    public static boolean hasSpecialBound (int[] arr) {
+    public static boolean hasSpecialBound(int[] arr) {
 
         System.out.println("Входной массив");
         System.out.println(Arrays.toString(arr));
@@ -85,7 +85,7 @@ public class MainApp {
         return false; //"Нет такой точки"
     }
 
-    public static boolean isSorted (int[] arr, String sortType){
+    public static boolean isSorted(int[] arr, String sortType) {
 
         System.out.println("Входной массив");
         System.out.println(Arrays.toString(arr));
@@ -100,8 +100,7 @@ public class MainApp {
                 }
                 prevValue = arr[i];
             }
-        }
-        else if  (sortType.equals("asc")){
+        } else if (sortType.equals("asc")) {
             for (int i = 1; i < arr.length; i++) {
                 if (prevValue > arr[i]) {
 
@@ -110,8 +109,7 @@ public class MainApp {
                 }
                 prevValue = arr[i];
             }
-        }
-        else {
+        } else {
             System.out.println("Введен неправильный порядок сортировки. Выберите asc или desc");
             return false;
         }
@@ -120,16 +118,16 @@ public class MainApp {
 
     }
 
-    public static void reverseArray (int[] arr) {
+    public static void reverseArray(int[] arr) {
 
         System.out.println("Входной массив");
         System.out.println(Arrays.toString(arr));
         int buffer;
 
-        for (int i = 0; i < arr.length/2; i++) {
+        for (int i = 0; i < arr.length / 2; i++) {
             buffer = arr[i];
-            arr[i] = arr[arr.length-1-i];
-            arr[arr.length-1-i] = buffer;
+            arr[i] = arr[arr.length - 1 - i];
+            arr[arr.length - 1 - i] = buffer;
 
         }
         System.out.println("Выходной массив");
@@ -139,26 +137,24 @@ public class MainApp {
     public static void main(String[] args) {
         //1
         System.out.println("Задача 1");
-        sumArrays(genArray(0,false), genArray(0,false), genArray(0,false));
+        sumArrays(genArray(0, false), genArray(0, false), genArray(0, false));
         System.out.println();
 
         //2
         //genArray(0, false)
         System.out.println("Задача 2");
-        if (hasSpecialBound(genArray(0,false))) {  //new int[] {1,1,1,3,1,1,1,1,1,9}
+        if (hasSpecialBound(genArray(0, false))) {  //new int[] {1,1,1,3,1,1,1,1,1,9}
             System.out.println("Точка находится между элементами");
-        }
-        else {
+        } else {
             System.out.println("Точка НЕ находится между элементами");
         }
         System.out.println();
 
         //3
         System.out.println("Задача 3");
-        if (isSorted(genArray(0,false), "asc")) {
+        if (isSorted(genArray(0, false), "asc")) {
             System.out.println("Массив отсортирован в нужном порядке");
-        }
-        else {
+        } else {
             System.out.println("Массив НЕ отсортирован в нужном порядке");
         }
         System.out.println();
