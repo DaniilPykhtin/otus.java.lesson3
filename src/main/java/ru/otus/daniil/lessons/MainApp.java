@@ -90,7 +90,7 @@ public class MainApp {
         System.out.println("Входной массив");
         System.out.println(Arrays.toString(arr));
         int prevValue = arr[0];
-        if (sortType.equals("asc"))  //идея посоветовала сравгивать так
+        if (sortType.equals("desc"))  //идея посоветовала сравнивать так
         {
             for (int i = 1; i < arr.length; i++) {
                 if (prevValue < arr[i]) {
