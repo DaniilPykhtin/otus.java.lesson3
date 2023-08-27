@@ -34,7 +34,7 @@ public class PhoneBook {
     }
 
     public boolean containsPhoneNumber(String phone) {
-        for (HashSet value : namePhoneMap.values()) {
+        for (HashSet<String> value : namePhoneMap.values()) {
             if (value.contains(phone)) {
                 return true;
             }
