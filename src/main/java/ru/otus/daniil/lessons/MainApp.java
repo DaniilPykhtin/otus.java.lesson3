@@ -1,167 +1,134 @@
 package ru.otus.daniil.lessons;
 
-
-import java.util.Arrays;
+import java.util.ArrayList;
 
 public class MainApp {
 
-    //вспомогательные методы
-    public static int genIntWithinRange(int min, int max) {
-        return (int) ((Math.random() * ((max - min) + 1)) + min);
+    public static ArrayList<Integer> createIntList(int min, int max) {
+        ArrayList<Integer> intList = new ArrayList<>();
+        //проверка на min < max и неотрицательность
+        for (int i = 0; i < max - min + 1; i++) {
+            intList.add(min + i);
+        }
+
+        return intList;
     }
 
-    //  можно перегрузить и выбирать maxSize и minSize
-    public static int[] genArray(int size, boolean isEmpty) {
-        int arrSize = size;
-
-        if (size == 0) {
-            arrSize = genIntWithinRange(4, 15);
-        }
-
-        int[] arr = new int[arrSize];
-
-        if (isEmpty) {
-            return arr;
-        }
-
-        for (int i = 0; i < arrSize; i++) {
-            arr[i] = genIntWithinRange(-100, 100);
-        }
-        return arr;
-    }
-
-    // Домашнее задание
-    public static int[] sumArrays(int[]... arrays) { // получается на вход идет матрица
-
-        //дебаг
-        System.out.println("Входные массивы");
-        for (int i = 0; i < arrays.length; i++) {
-            System.out.println(Arrays.toString(arrays[i]));
-        }
-        //
-
-        int maxSize = arrays[0].length;
-
-        //нашли максимальный размер
-        for (int i = 1; i < arrays.length; i++) {
-            if (arrays[i].length > maxSize) {
-                maxSize = arrays[i].length;
+    public static int sumIntList(ArrayList<Integer> intList) {
+        int res = 0;
+        for (int i = 0; i < intList.size(); i++) {
+            int gotValue = intList.get(i);
+            if (gotValue > 5) {
+                res += gotValue;
             }
         }
-
-        int[] resArray = genArray(maxSize, true);
-
-        for (int i = 0; i < arrays.length; i++) {
-            for (int j = 0; j < arrays[i].length; j++) {
-                resArray[j] += arrays[i][j];
-            }
-        }
-        System.out.println("Выходной массив");
-        System.out.println(Arrays.toString(resArray));
-        return resArray;
+        return res;
     }
 
-    public static boolean hasSpecialBound(int[] arr) {
-
-        System.out.println("Входной массив");
-        System.out.println(Arrays.toString(arr));
-
-        int fullSum = 0;
-        int leftSum = 0;
-        for (int i = 0; i < arr.length; i++) {
-            fullSum += arr[i];
+    public static void reinitListByValue(ArrayList<Integer> intList, int value) {
+        for (int i = 0; i < intList.size(); i++) {
+            intList.set(i, value);
         }
-
-        if (fullSum % 2 == 1) {
-            return false; //"Нет такой точки"
-        }
-
-        for (int i = 0; i < arr.length; i++) {
-            leftSum += arr[i];
-
-            if (leftSum == (fullSum / 2))
-                return true; //"Точка находится между элементами"
-        }
-        return false; //"Нет такой точки"
     }
 
-    public static boolean isSorted(int[] arr, String sortType) {
-
-        System.out.println("Входной массив");
-        System.out.println(Arrays.toString(arr));
-        int prevValue = arr[0];
-        if (sortType.equals("desc"))  //идея посоветовала сравнивать так
-        {
-            for (int i = 1; i < arr.length; i++) {
-                if (prevValue < arr[i]) {
-
-                    //"Массив не отсортирован в нужном порядке"
-                    return false;
-                }
-                prevValue = arr[i];
-            }
-        } else if (sortType.equals("asc")) {
-            for (int i = 1; i < arr.length; i++) {
-                if (prevValue > arr[i]) {
-
-                    //"Массив не отсортирован в нужном порядке"
-                    return false;
-                }
-                prevValue = arr[i];
-            }
-        } else {
-            System.out.println("Введен неправильный порядок сортировки. Выберите asc или desc");
-            return false;
+    public static void increaseListByValue(ArrayList<Integer> intList, int value) {
+        for (int i = 0; i < intList.size(); i++) {
+            intList.set(i, intList.get(i) + value);
         }
-
-        return true; //"Массив отсортирован в нужном порядке"
-
     }
 
-    public static void reverseArray(int[] arr) {
+    //        Списки
+    public static ArrayList<String> getEmployeeNamesList(ArrayList<Employee> empList) {
+        // проверка что список не пустой
 
-        System.out.println("Входной массив");
-        System.out.println(Arrays.toString(arr));
-        int buffer;
+        ArrayList<String> empNameList = new ArrayList<>();
 
-        for (int i = 0; i < arr.length / 2; i++) {
-            buffer = arr[i];
-            arr[i] = arr[arr.length - 1 - i];
-            arr[arr.length - 1 - i] = buffer;
-
+        for (int i = 0; i < empList.size(); i++) {
+            empNameList.add(empList.get(i).name);
         }
-        System.out.println("Выходной массив");
-        System.out.println(Arrays.toString(arr));
+        return empNameList;
+    }
+
+    public static ArrayList<Employee> getEmployeeByAge(ArrayList<Employee> empList, int minAge) {
+        // проверка что список не пустой
+        ArrayList<Employee> someEmployees = new ArrayList<>();
+        for (int i = 0; i < empList.size(); i++) {
+            if (empList.get(i).age >= minAge) {
+                someEmployees.add(empList.get(i));
+            }
+        }
+        return someEmployees;
+    }
+
+    //        Реализуйте метод, принимающий в качестве аргумента список сотрудников и
+//        минимальный средний возраст, и проверяющий что средний возраст сотрудников превышает указанный аргумент;
+    public static boolean filterEmployeesByAvgAge(ArrayList<Employee> empList, int avgAge) {
+        // проверка что список не пустой
+        float resAvgAge = 0f;
+        for (int i = 0; i < empList.size(); i++) {
+            resAvgAge += empList.get(i).age;
+        }
+        resAvgAge /= empList.size();
+        return (resAvgAge > avgAge);
+    }
+
+    //        Реализуйте метод, принимающий в качестве аргумента список сотрудников, и
+//        возвращающий ссылку на самого молодого сотрудника.
+    public static Employee getYoungestEmployee(ArrayList<Employee> empList) {
+        // проверка что список не пустой
+        Employee empLink = empList.get(0);
+        int minAge = empLink.age;
+
+        for (int i = 1; i < empList.size(); i++) {
+
+            //System.out.println(empList.get(i).name+ " " + empList.get(i).age);
+            if (minAge > empList.get(i).age) {
+                empLink = empList.get(i);
+                minAge = empLink.age;
+            }
+        }
+        return empLink;
     }
 
     public static void main(String[] args) {
-        //1
-        System.out.println("Задача 1");
-        sumArrays(genArray(0, false), genArray(0, false), genArray(0, false));
-        System.out.println();
 
-        //2
-        //genArray(0, false)
-        System.out.println("Задача 2");
-        if (hasSpecialBound(genArray(0, false))) {  //new int[] {1,1,1,3,1,1,1,1,1,9}
-            System.out.println("Точка находится между элементами");
-        } else {
-            System.out.println("Точка НЕ находится между элементами");
-        }
-        System.out.println();
+        System.out.println(createIntList(3, 9));
 
-        //3
-        System.out.println("Задача 3");
-        if (isSorted(genArray(0, false), "asc")) {
-            System.out.println("Массив отсортирован в нужном порядке");
-        } else {
-            System.out.println("Массив НЕ отсортирован в нужном порядке");
+
+        ArrayList<Integer> intList = createIntList(3, 9);
+        System.out.println(sumIntList(intList));
+
+        reinitListByValue(intList, 15);
+        System.out.println(intList);
+
+        increaseListByValue(intList, -9);
+        System.out.println(intList);
+
+
+        ArrayList<Employee> emp = new ArrayList<>();
+
+        emp.add(new Employee("Vasya", 43));
+        emp.add(new Employee("Gena", 23));
+        emp.add(new Employee("Katya", 33));
+        emp.add(new Employee("Gennadiy Semyonovich", 63));
+
+
+        System.out.println(getEmployeeNamesList(emp));
+
+        ArrayList<Employee> empAge = getEmployeeByAge(emp, 35);
+        for (int i = 0; i < empAge.size(); i++) {
+            empAge.get(i).getInfo();
         }
-        System.out.println();
-        //4
-        System.out.println("Задача 4");
-        reverseArray(genArray(7, false));
-        System.out.println();
+
+        if (filterEmployeesByAvgAge(emp, 40)) {
+            System.out.println("Список удовлетворяет условиям");
+        } else {
+            System.out.println("Список не удовлетворяет условиям");
+        }
+
+        System.out.println("Самый молодой сотрудник: ");
+        getYoungestEmployee(emp).getInfo();
     }
+
 
 }
