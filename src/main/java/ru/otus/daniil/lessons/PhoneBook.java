@@ -13,7 +13,7 @@ import java.util.*;
 //        Метод containsPhoneNumber должен проверять наличие телефона в справочнике.
 public class PhoneBook {
 
-    HashMap<String, HashSet<String>> namePhoneMap= new HashMap<>();
+    HashMap<String, HashSet<String>> namePhoneMap = new HashMap<>();
 
     public void find(String name) {
         //namePhoneMap.get(name);
@@ -33,7 +33,7 @@ public class PhoneBook {
 
     }
 
-    public boolean containsPhoneNumber (String phone) {
+    public boolean containsPhoneNumber(String phone) {
         for (HashSet value : namePhoneMap.values()) {
             if (value.contains(phone)) {
                 return true;
