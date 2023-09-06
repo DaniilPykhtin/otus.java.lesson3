@@ -20,11 +20,6 @@ import java.util.List;
 
 public class BinTree implements SearchTree {
     private TreeNode root;
-    private int size;
-
-    public TreeNode getRoot() {
-        return root;
-    }
 
     public BinTree() {
     }
