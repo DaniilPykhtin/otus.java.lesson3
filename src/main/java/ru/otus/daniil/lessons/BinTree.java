@@ -125,6 +125,7 @@ public class BinTree implements SearchTree {
         }
 
     }
+
     public List getTreeAsList(TreeNode root) {
         List<Integer> list = new ArrayList();
 
