@@ -4,52 +4,41 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-//Из Предварительно отсортированного списка (List) сформировать двоичное дерево поиска
-//        Написать рекурсивную функцию поиска в сформированном дереве
-//        Класс должен имплементировать следующий интерфейс
-//        ```
-//public interface SearchTree {
-///**
-// @param element to find
-// @return element if exists, otherwise - null
-// /
-// T find(T element);
-// List getSortedList();
-// }
-
-
 public class BinTree implements SearchTree {
-    private TreeNode root;
+    private final TreeNode root;
 
-    public BinTree() {
+    public BinTree(List<TreeNode> list) {
+        List<TreeNode> sortedList = list;  // чтоб лист источник не менять
+        sortedList.sort(Comparator.comparing(TreeNode::getWeight));
+        root = buildReqursive(sortedList);
     }
 
-    public void fromList(List<TreeNode> initArray) {
-
-        if (root != null) {
-            System.out.println("Дерево должно быть пустым");
-            return;
+    public TreeNode buildReqursive(List<TreeNode> list) {
+        TreeNode localRoot;
+        int centerIdx;
+        if (list.size() == 1) {
+            localRoot = list.get(0);
+            return localRoot;
         }
-
-        initArray.sort(Comparator.comparing(TreeNode::getWeight));
-
-//        for (int i = 0; i < initArray.size(); i++) {
-//            System.out.print(initArray.get(i).getWeight() + " ");
-//        }
-
-        this.root = initArray.get(initArray.size() / 2);
-
-        List<Integer> rootIndexes = getRootIndexes(initArray.size(), 0);
-
-//        System.out.println(rootIndexes);
-        for (int i = 0; i < rootIndexes.size(); i++) {
-            addNode(initArray.get(rootIndexes.get(i)), root);
+        if (list.size() == 2) {
+            localRoot = list.get(1);
+            localRoot.setLeft(list.get(0));
+            return localRoot;
         }
-
-        for (int i = 0; i < initArray.size(); i++) {
-//            System.out.println(initArray.get(i).getWeight());
-            addNode(initArray.get(i), root);
+        if (list.size() == 5) {
+            centerIdx = 3;  // для крОсоты
+        } else {
+            centerIdx = list.size() / 2;
         }
+        localRoot = list.get(centerIdx);
+
+        List<TreeNode> leftList = list.subList(0, centerIdx); //если бы я умел читать доку, то не потратил бы время на to_index - EXCLUSIVE
+        List<TreeNode> rightList = list.subList(centerIdx + 1, list.size());
+
+        localRoot.setLeft(buildReqursive(leftList));
+        localRoot.setRight(buildReqursive(rightList));
+
+        return localRoot;
     }
 
     public TreeNode addNode(TreeNode node, TreeNode root) {
@@ -71,31 +60,6 @@ public class BinTree implements SearchTree {
             return root;
         }
         return root;
-    }
-
-    //найдём индексы будущих корневых элементов дерева по отсортированному списку
-    public List<Integer> getRootIndexes(int size, int offset) {
-        List<Integer> res = new ArrayList<>();
-
-        int center = size / 2;
-//        System.out.println(center + " " + offset);
-
-        if (size == 5) {
-            res.add(3 + offset);
-            res.add(1 + offset);
-            return res;
-        } else {
-            res.add(center + offset);
-        }
-
-        if (center / 2f <= 1f) {
-            return res;
-        }
-
-        res.addAll(getRootIndexes(center, offset));
-        res.addAll(getRootIndexes(size - (center + 1), offset + (center + 1)));
-
-        return res;
     }
 
     @Override
@@ -132,8 +96,7 @@ public class BinTree implements SearchTree {
         list.addAll(getTreeAsList(root.getRight()));
         return list;
     }
-
-
+    
     @Override
     public List getSortedList() {
         List<Integer> list = new ArrayList();
