@@ -1,5 +1,6 @@
 package ru.otus.daniil.lessons;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +8,7 @@ public class MainApp {
 
 
     public static void main(String[] args) {
+
         List<TreeNode> arrList = new ArrayList<>();
         arrList.add(new Node(1));
         arrList.add(new Node(47));
@@ -30,16 +32,13 @@ public class MainApp {
         arrList.add(new Node(87));
 
 
-        BinTree tree = new BinTree();
-        tree.fromList(arrList);
+        BinTree tree = new BinTree(arrList);
         tree.find(34);
         tree.find(2);
         tree.find(0);
         tree.find(55);
+        tree.find(11);
 
         System.out.println(tree.getSortedList());
-
-
-        //System.out.println(getIdx(21, 0));
     }
 }
