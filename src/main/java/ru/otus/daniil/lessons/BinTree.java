@@ -8,9 +8,8 @@ public class BinTree implements SearchTree {
     private final TreeNode root;
 
     public BinTree(List<TreeNode> list) {
-        List<TreeNode> sortedList = list;  // чтоб лист источник не менять
-        sortedList.sort(Comparator.comparing(TreeNode::getWeight));
-        root = buildRecursive(sortedList);
+        list.sort(Comparator.comparing(TreeNode::getWeight));
+        root = buildRecursive(list);
     }
 
     public TreeNode buildRecursive(List<TreeNode> list) {
