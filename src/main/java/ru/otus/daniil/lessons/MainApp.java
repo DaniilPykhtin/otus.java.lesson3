@@ -1,167 +1,72 @@
 package ru.otus.daniil.lessons;
 
-
-import java.util.Arrays;
-
 public class MainApp {
 
-    //вспомогательные методы
-    public static int genIntWithinRange(int min, int max) {
-        return (int) ((Math.random() * ((max - min) + 1)) + min);
-    }
-
-    //  можно перегрузить и выбирать maxSize и minSize
-    public static int[] genArray(int size, boolean isEmpty) {
-        int arrSize = size;
-
-        if (size == 0) {
-            arrSize = genIntWithinRange(4, 15);
-        }
-
-        int[] arr = new int[arrSize];
-
-        if (isEmpty) {
-            return arr;
-        }
-
-        for (int i = 0; i < arrSize; i++) {
-            arr[i] = genIntWithinRange(-100, 100);
-        }
-        return arr;
-    }
-
-    // Домашнее задание
-    public static int[] sumArrays(int[]... arrays) { // получается на вход идет матрица
-
-        //дебаг
-        System.out.println("Входные массивы");
-        for (int i = 0; i < arrays.length; i++) {
-            System.out.println(Arrays.toString(arrays[i]));
-        }
-        //
-
-        int maxSize = arrays[0].length;
-
-        //нашли максимальный размер
-        for (int i = 1; i < arrays.length; i++) {
-            if (arrays[i].length > maxSize) {
-                maxSize = arrays[i].length;
-            }
-        }
-
-        int[] resArray = genArray(maxSize, true);
-
-        for (int i = 0; i < arrays.length; i++) {
-            for (int j = 0; j < arrays[i].length; j++) {
-                resArray[j] += arrays[i][j];
-            }
-        }
-        System.out.println("Выходной массив");
-        System.out.println(Arrays.toString(resArray));
-        return resArray;
-    }
-
-    public static boolean hasSpecialBound(int[] arr) {
-
-        System.out.println("Входной массив");
-        System.out.println(Arrays.toString(arr));
-
-        int fullSum = 0;
-        int leftSum = 0;
-        for (int i = 0; i < arr.length; i++) {
-            fullSum += arr[i];
-        }
-
-        if (fullSum % 2 == 1) {
-            return false; //"Нет такой точки"
-        }
+    public static void oneThreadPerfExample(double[] arr) {
 
         for (int i = 0; i < arr.length; i++) {
-            leftSum += arr[i];
-
-            if (leftSum == (fullSum / 2))
-                return true; //"Точка находится между элементами"
+            arr[i] = 1.14 * Math.cos(i) * Math.sin(i * 0.2) * Math.cos(i / 1.2);
         }
-        return false; //"Нет такой точки"
     }
 
-    public static boolean isSorted(int[] arr, String sortType) {
+    public static void fourThreadPerfExample(double[] arr) throws InterruptedException {
 
-        System.out.println("Входной массив");
-        System.out.println(Arrays.toString(arr));
-        int prevValue = arr[0];
-        if (sortType.equals("desc"))  //идея посоветовала сравнивать так
-        {
-            for (int i = 1; i < arr.length; i++) {
-                if (prevValue < arr[i]) {
-
-                    //"Массив не отсортирован в нужном порядке"
-                    return false;
-                }
-                prevValue = arr[i];
+        Thread thread1 = new Thread(() -> {
+            for (int i = 0; i < arr.length / 4; i++) {
+                arr[i] = 1.14 * Math.cos(i) * Math.sin(i * 0.2) * Math.cos(i / 1.2);
             }
-        } else if (sortType.equals("asc")) {
-            for (int i = 1; i < arr.length; i++) {
-                if (prevValue > arr[i]) {
+        });
 
-                    //"Массив не отсортирован в нужном порядке"
-                    return false;
-                }
-                prevValue = arr[i];
+        Thread thread2 = new Thread(() -> {
+            for (int i = arr.length / 4; i < arr.length / 2; i++) {
+                arr[i] = 1.14 * Math.cos(i) * Math.sin(i * 0.2) * Math.cos(i / 1.2);
             }
-        } else {
-            System.out.println("Введен неправильный порядок сортировки. Выберите asc или desc");
-            return false;
-        }
+        });
 
-        return true; //"Массив отсортирован в нужном порядке"
+        Thread thread3 = new Thread(() -> {
+            for (int i = arr.length / 2; i < arr.length * 3 / 4; i++) {
+                arr[i] = 1.14 * Math.cos(i) * Math.sin(i * 0.2) * Math.cos(i / 1.2);
+            }
+        });
+
+        Thread thread4 = new Thread(() -> {
+            for (int i = arr.length * 3 / 4; i < arr.length; i++) {
+                arr[i] = 1.14 * Math.cos(i) * Math.sin(i * 0.2) * Math.cos(i / 1.2);
+            }
+        });
+
+        thread1.start();
+        thread2.start();
+        thread3.start();
+        thread4.start();
+        thread1.join();
+        thread2.join();
+        thread3.join();
+        thread4.join();
+
 
     }
 
-    public static void reverseArray(int[] arr) {
 
-        System.out.println("Входной массив");
-        System.out.println(Arrays.toString(arr));
-        int buffer;
+    public static void main(String[] args) throws InterruptedException {
+        double[] bigArr1 = new double[100_000_000];
+        double[] bigArr2 = new double[100_000_000];
 
-        for (int i = 0; i < arr.length / 2; i++) {
-            buffer = arr[i];
-            arr[i] = arr[arr.length - 1 - i];
-            arr[arr.length - 1 - i] = buffer;
+        long time = System.currentTimeMillis();
+        oneThreadPerfExample(bigArr1);
+        System.out.println("Один поток: " + (System.currentTimeMillis() - time) / 1000 + "сек");
 
+        time = System.currentTimeMillis();
+        fourThreadPerfExample(bigArr2);
+        System.out.println("Четыре потока: " + (System.currentTimeMillis() - time) / 1000 + "сек");
+
+        for (int i = 0; i < bigArr1.length; i++) {
+            if (bigArr1[i] != bigArr2[i]) {
+                System.out.println("Где-то косяк");
+                break;
+            }
         }
-        System.out.println("Выходной массив");
-        System.out.println(Arrays.toString(arr));
+
+
     }
-
-    public static void main(String[] args) {
-        //1
-        System.out.println("Задача 1");
-        sumArrays(genArray(0, false), genArray(0, false), genArray(0, false));
-        System.out.println();
-
-        //2
-        //genArray(0, false)
-        System.out.println("Задача 2");
-        if (hasSpecialBound(genArray(0, false))) {  //new int[] {1,1,1,3,1,1,1,1,1,9}
-            System.out.println("Точка находится между элементами");
-        } else {
-            System.out.println("Точка НЕ находится между элементами");
-        }
-        System.out.println();
-
-        //3
-        System.out.println("Задача 3");
-        if (isSorted(genArray(0, false), "asc")) {
-            System.out.println("Массив отсортирован в нужном порядке");
-        } else {
-            System.out.println("Массив НЕ отсортирован в нужном порядке");
-        }
-        System.out.println();
-        //4
-        System.out.println("Задача 4");
-        reverseArray(genArray(7, false));
-        System.out.println();
-    }
-
 }
