@@ -21,9 +21,6 @@ public class ClientHandler {
         return username;
     }
 
-    public void setRole(UserRole role) {
-        this.role = role;
-    }
 
     public ClientHandler(Socket socket, Server server) throws IOException {
         this.socket = socket;
