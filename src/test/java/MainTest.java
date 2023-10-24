@@ -1,6 +1,6 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import ru.otus.daniil.pykhtin.lessons.Main;
+import ru.otus.daniil.lessons.Main;
 
 public class MainTest {
 
