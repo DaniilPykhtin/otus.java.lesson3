@@ -7,7 +7,6 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -16,7 +15,6 @@ import java.util.concurrent.Executors;
 public class MainApplication {
     public static final int PORT = 8189;
     public static int threadNum = 3;
-    public static int debugCnt = 0;
     // + К домашнему задания:
     // Добавить логирование!!!
 
@@ -33,7 +31,7 @@ public class MainApplication {
 
         try {
             ServerSocket serverSocket = new ServerSocket(PORT);
-            logger.info("Сервер запущен, порт: " + PORT);
+            logger.info("Main: Сервер запущен, порт: " + PORT);
 
             while (true) {
                 try  {
@@ -42,11 +40,11 @@ public class MainApplication {
                     eServise.execute(handler::run);
 
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    logger.error("Main: " + e.getMessage());
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Main: " + e.getMessage());
         }
 
     }
