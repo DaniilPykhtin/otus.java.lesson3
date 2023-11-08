@@ -1,4 +1,4 @@
-package ru.otus.daniil.http;
+package ru.otus.daniil.lessons;
 
 import java.io.IOException;
 import java.io.OutputStream;
